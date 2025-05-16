@@ -1,17 +1,18 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
-import { UserRoles } from "../enums";
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { UserRoles } from '../enums';
 
-@Table({tableName:'users',timestamps:true})
-export class User extends Model{
-    @Column({type:DataType.TEXT})
-    name:string
-
-    @Column({type:DataType.TEXT})
-    email:string;
-
-    @Column({type:DataType.TEXT})
-    password:string;
-
-    @Column({type:DataType.ENUM,values:Object.values(UserRoles),defaultValue:UserRoles.USER})
-    role:UserRoles;
+@Table({ tableName: 'users', timestamps: true })
+export class User extends Model {
+  @Column({ type: DataType.STRING })
+  name: string;
+  @Column({ type: DataType.STRING, unique: true })
+  email: string;
+  @Column({ type: DataType.STRING })
+  password: string;
+  @Column({
+    type: DataType.ENUM,
+    values: Object.values(UserRoles),
+    defaultValue: UserRoles.USER,
+  })
+  role: UserRoles;
 }

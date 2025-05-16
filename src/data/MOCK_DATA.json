@@ -1,0 +1,227 @@
+[
+  {
+    "name": "Finley",
+    "description": "Delicious and crispy snack perfect for parties.",
+    "price": 175.06,
+    "discount": 57,
+    "rating": 1,
+    "stock": 11,
+    "status": "active"
+  },
+  {
+    "name": "Kai",
+    "description": "Delicious and crispy snack perfect for parties.",
+    "price": 289.76,
+    "discount": 23,
+    "rating": 2,
+    "stock": 71,
+    "status": "active"
+  },
+  {
+    "name": "Carmen",
+    "description": "Reusable product for eco-conscious consumers.",
+    "price": 230.4,
+    "discount": 26,
+    "rating": 4,
+    "stock": 86,
+    "status": "inactive"
+  },
+  {
+    "name": "Finley",
+    "description": "Compact design suitable for travel.",
+    "price": 14.06,
+    "discount": 52,
+    "rating": 2,
+    "stock": 30,
+    "status": "out_of_stock"
+  },
+  {
+    "name": "Kai",
+    "description": "Wireless technology for convenience.",
+    "price": 140.39,
+    "discount": 71,
+    "rating": 5,
+    "stock": 2,
+    "status": "inactive"
+  },
+  {
+    "name": "Reese",
+    "description": "Wireless technology for convenience.",
+    "price": 99.25,
+    "discount": 68,
+    "rating": 5,
+    "stock": 88,
+    "status": "inactive"
+  },
+  {
+    "name": "Oakley",
+    "description": "Durable container for everyday use.",
+    "price": 190.44,
+    "discount": 33,
+    "rating": 1,
+    "stock": 0,
+    "status": "inactive"
+  },
+  {
+    "name": "Jules",
+    "description": "Protective gear for outdoor adventures.",
+    "price": 105.79,
+    "discount": 39,
+    "rating": 1,
+    "stock": 8,
+    "status": "inactive"
+  },
+  {
+    "name": "Xen",
+    "description": "Protective gear for outdoor adventures.",
+    "price": 59.37,
+    "discount": 16,
+    "rating": 1,
+    "stock": 7,
+    "status": "out_of_stock"
+  },
+  {
+    "name": "Carmen",
+    "description": "Wireless technology for convenience.",
+    "price": 154.65,
+    "discount": 33,
+    "rating": 1,
+    "stock": 80,
+    "status": "out_of_stock"
+  },
+  {
+    "name": "Oakley",
+    "description": "Durable container for everyday use.",
+    "price": 244.33,
+    "discount": 3,
+    "rating": 5,
+    "stock": 64,
+    "status": "inactive"
+  },
+  {
+    "name": "Skyler",
+    "description": "Aromatic blend of herbs and spices.",
+    "price": 140.63,
+    "discount": 55,
+    "rating": 5,
+    "stock": 98,
+    "status": "inactive"
+  },
+  {
+    "name": "Carmen",
+    "description": "Durable container for everyday use.",
+    "price": 185.23,
+    "discount": 91,
+    "rating": 4,
+    "stock": 43,
+    "status": "active"
+  },
+  {
+    "name": "Grayson",
+    "description": "Aromatic blend of herbs and spices.",
+    "price": 182.37,
+    "discount": 41,
+    "rating": 5,
+    "stock": 57,
+    "status": "out_of_stock"
+  },
+  {
+    "name": "Xen",
+    "description": "Reusable product for eco-conscious consumers.",
+    "price": 269.98,
+    "discount": 11,
+    "rating": 1,
+    "stock": 53,
+    "status": "inactive"
+  },
+  {
+    "name": "Grayson",
+    "description": "Organic ingredients for healthy meals.",
+    "price": 59.49,
+    "discount": 87,
+    "rating": 2,
+    "stock": 59,
+    "status": "inactive"
+  },
+  {
+    "name": "Yanni",
+    "description": "Durable container for everyday use.",
+    "price": 100.06,
+    "discount": 8,
+    "rating": 5,
+    "stock": 71,
+    "status": "inactive"
+  },
+  {
+    "name": "Skyler",
+    "description": "Aromatic blend of herbs and spices.",
+    "price": 208.99,
+    "discount": 88,
+    "rating": 3,
+    "stock": 78,
+    "status": "inactive"
+  },
+  {
+    "name": "Nico",
+    "description": "Compact design suitable for travel.",
+    "price": 153.11,
+    "discount": 20,
+    "rating": 5,
+    "stock": 18,
+    "status": "inactive"
+  },
+  {
+    "name": "Finley",
+    "description": "Scented item to freshen up your space.",
+    "price": 199.03,
+    "discount": 66,
+    "rating": 3,
+    "stock": 85,
+    "status": "active"
+  },
+  {
+    "name": "Xen",
+    "description": "Protective gear for outdoor adventures.",
+    "price": 58.79,
+    "discount": 3,
+    "rating": 2,
+    "stock": 47,
+    "status": "active"
+  },
+  {
+    "name": "Winter",
+    "description": "Delicious and crispy snack perfect for parties.",
+    "price": 137.45,
+    "discount": 8,
+    "rating": 1,
+    "stock": 0,
+    "status": "inactive"
+  },
+  {
+    "name": "Nico",
+    "description": "Protective gear for outdoor adventures.",
+    "price": 88.49,
+    "discount": 67,
+    "rating": 5,
+    "stock": 24,
+    "status": "inactive"
+  },
+  {
+    "name": "Zion",
+    "description": "Compact design suitable for travel.",
+    "price": 97.79,
+    "discount": 24,
+    "rating": 5,
+    "stock": 41,
+    "status": "inactive"
+  },
+  {
+    "name": "Skyler",
+    "description": "Protective gear for outdoor adventures.",
+    "price": 148.9,
+    "discount": 71,
+    "rating": 3,
+    "stock": 73,
+    "status": "active"
+  }
+]

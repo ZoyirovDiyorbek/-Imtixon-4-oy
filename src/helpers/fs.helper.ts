@@ -1,33 +1,36 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { existsSync } from "node:fs";
+import { Injectable } from "@nestjs/common";
 import * as path from "node:path";
 import * as fs from "node:fs";
-import * as fsPromise from "node:fs/promises"
+import * as fsPromise from "node:fs/promises";
 
 @Injectable()
 export class FsHelper {
-    async uploadFile(file:Express.Multer.File){
-        const fileHolder = path.join(process.cwd(),"uploads");
+    async uploadFile(file: Express.Multer.File) {
+        const fileFolder = path.join(process.cwd(), 'uploads');
 
-        if(!fs.existsSync(fileHolder)){
-            fs.mkdirSync(fileHolder,{recursive:true})
+        if (!fs.existsSync(fileFolder)) {
+            fs.mkdirSync(fileFolder, { recursive: true });
         }
 
-        let fileName = `${Date.now()}-file.${file.originalname.split('.')[1]}`;
+        let fileName = `${Date.now()}.${file.originalname.split('.')[1]}`;
 
-        await fsPromise.writeFile(path.join(fileHolder,fileName),file.buffer);
-        return fileName
-    };
+        await fsPromise.writeFile(path.join(fileFolder, fileName), file.buffer);
 
-    async deleteFile(name:string){
-        let filePath = path.join(process.cwd(),'uploads',name);
-
-        if(!fs.existsSync(filePath)){
-            throw new BadRequestException('This file does not exist!')
-        }
-        await fsPromise.unlink(filePath);
         return {
-            message:"Succes"
+            message: "success",
+            fileUrl: path.join(fileFolder, fileName)
         };
-    };
+    }
+
+    async deleteFile(filePath: string) {
+        const absolutePath = path.join(process.cwd(), 'uploads', filePath);
+        console.log(absolutePath)
+
+        if (fs.existsSync(absolutePath)) {
+            await fsPromise.unlink(absolutePath);
+        } else {
+            console.log(`File not found: ${absolutePath}`);
+        }
+    }
 }
+

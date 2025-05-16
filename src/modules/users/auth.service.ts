@@ -1,50 +1,109 @@
-import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
-import { User } from "./models/auth.model";
-import { RegisterDto } from "./dtos";
-import * as bcrypt from "bcryptjs"
-import { LoginDto } from "./dtos/login.dtos";
-import { JwtHelper } from "src/helpers/jwt.helper";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from './models';
+import { LoginDto, RegisterDto } from './dtos';
+import * as bcrypt from 'bcryptjs';
+import { JwtHelper } from 'src/helpers/jwt.helper';
+import { UserRoles } from './enums';
 
 @Injectable()
-export class UserService {
-    constructor(@InjectModel(User) private UserModel: typeof User,
-        private JwtHelper:JwtHelper){}
+export class UserService implements OnModuleInit {
+  constructor(
+    @InjectModel(User) private userModel: typeof User,
+    private jwtService: JwtHelper,
+  ) {}
 
-    async Register(payload:RegisterDto){
-        let foundedUser = await this.UserModel.findOne({where:{email:payload.email}})
-        if(foundedUser?.dataValues){
-            throw new ConflictException('User with this email is already exist!')
-        }
+  async onModuleInit() {
+    await this.seedUser();
+  }
 
-        let newUser = await this.UserModel.create({
-            name:payload.name,
-            email:payload.email,
-            password:bcrypt.hashSync(payload.password)
-        })
+  async register(payload: RegisterDto) {
+    const founded = await this.userModel.findOne({
+      where: { email: payload.email },
+    });
 
-        return {
-            message:"Successfully registered!",
-            data:newUser
-        }
+    if (founded) {
+      throw new ConflictException(`Bunday foydalanuvchi tizimda bor`);
     }
 
-    async Login(payload:LoginDto){
-        let foundedUser = await this.UserModel.findOne({where:{email:payload.email}})
-        if(!foundedUser?.dataValues){
-            throw new ConflictException('User with this email does not exists!')
-        }
+    const passwordHash = bcrypt.hashSync(payload.password);
+    const newUser = await this.userModel.create({
+      name: payload.name,
+      email: payload.email,
+      password: passwordHash,
+    });
 
-        let isMatch = bcrypt.compare(payload.password,foundedUser.dataValues.password)
+    return {
+      message: "Foydalanuvchi muofaqqiyatli muofaqiyatli ro'yhatdan o'tdi!",
+      data: newUser,
+    };
+  }
 
-        if(!isMatch){
-            throw new BadRequestException("Invalid password!")
-        }
+  async login(payload: LoginDto) {
+    const foundedUser = await this.userModel.findOne({
+      where: { email: payload.email },
+    });
 
-        const token = await this.JwtHelper.generateToken({id:foundedUser.dataValues.id,role:foundedUser.dataValues.role})
-        return {
-            message:"Successfully logged!",
-            token:token
-        }
+    if (!foundedUser) {
+      throw new NotFoundException(`Bunday emaillik foydalanuvchi mavjud emas`);
     }
+
+    const password = await bcrypt.compare(
+      payload.password,
+      foundedUser.dataValues.password,
+    );
+
+    if (!password) {
+      throw new ConflictException(
+        'Parol xato kiritildi! Iltimos tekshirib qaytadan kiring!',
+      );
+    }
+
+    const role = foundedUser.dataValues.role;
+    const { token } = await this.jwtService.generateToken({
+      id: foundedUser.id,
+      role: role,
+    });
+
+    return {
+      message: 'Foydalanuvchi tizimga kirdi',
+      data: {
+        token,
+        founded: foundedUser,
+      },
+    };
+  }
+
+  async seedUser() {
+    const defultUser = [
+      {
+        name: 'Tom',
+        email: 'tom@gmail.com',
+        password: 'tom123',
+        role: UserRoles.ADMIN,
+      },
+    ];
+
+    for (let user of defultUser) {
+      const foundedUser = await this.userModel.findOne({
+        where: { email: user.email },
+      });
+
+      if (!foundedUser) {
+        const passwordHash = bcrypt.hashSync(user.password);
+        await this.userModel.create({
+          name: user.name,
+          role: user.role,
+          email: user.email,
+          password: passwordHash,
+        });
+      }
+      console.log('Admin mufaqqiyatli yaratildi!');
+    }
+  }
 }

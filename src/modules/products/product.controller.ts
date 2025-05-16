@@ -1,46 +1,80 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from "@nestjs/common";
-import { ProductService } from "./product.service";
-import { CreateProductDto } from "./dtos";
-import { ProductQuery } from "./dtos/product-query.dto";
-import { CheckAuth } from "src/guards/check.auth.guard";
-import { CheckRoles } from "src/guards/check.role.guard";
-import { ApiBearerAuth } from "@nestjs/swagger";
-import { Protected } from "src/decorators/protected.decorator";
-import { Roles } from "src/decorators/role.decorator";
-import { UserRoles } from "../users";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Put,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ProductService } from './product.service';
+import { CreateProductDto, UpdateProductDto } from './dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { updateImageDto } from './dtos/image.dto';
+import { Protected, Roles } from 'src/decorators';
+import { UserRoles } from '../users';
+import { GetAllProductsDto } from './dtos/get.product.dto';
 
-@UseGuards(CheckAuth,CheckRoles)
-@Controller('product')
-export class ProductController{
-    constructor(private service: ProductService){}
+@Controller('products')
+export class ProductController {
+  constructor(private service: ProductService) {}
 
-    @ApiBearerAuth()
-    @Get()
-    @Roles([UserRoles.ADMIN,UserRoles.USER])
-    async getAll(@Query() query:ProductQuery){
-        return await this.service.getAll(query)
-    }
+  @Get()
+  @Protected(false)
+  @Roles([UserRoles.ADMIN, UserRoles.USER])
+  async getAll(@Query() query: GetAllProductsDto) {
+    return await this.service.getAll(query);
+  }
 
-    @ApiBearerAuth()
-    @Protected(true)
-    @Roles([UserRoles.ADMIN,UserRoles.USER])
-    @Post()
-    async createNew(@Body() payload:CreateProductDto){
-        return await this.service.createNew(payload)
-    }
+  @Post()
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.ADMIN])
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image_url'))
+  async create(
+    @Body() body: CreateProductDto,
+    @UploadedFile() image_url: Express.Multer.File,
+  ) {
+    return await this.service.cerate({ ...body, image_url });
+  }
 
-    @ApiBearerAuth()
-    @Patch(':id')
-    @Roles([UserRoles.ADMIN,UserRoles.USER])
-    async updateProduct(@Param('id',ParseIntPipe) id:number,
-                @Body()  payload:CreateProductDto){
-        return await this.service.updateProduct(payload,id)
-    }
+  @Patch(':id')
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.ADMIN])
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateProductDto,
+  ) {
+    return await this.service.update(id, body);
+  }
 
-    @ApiBearerAuth()
-    @Delete(':id')
-    @Roles([UserRoles.ADMIN,UserRoles.USER])
-    async deleteProduct(@Param('id',ParseIntPipe) id:number){
-        return await this.service.deleteProduct(id)
-    }
+  @Put(':id/image')
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.ADMIN])
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image_url'))
+  async updateImage(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateProductDto,
+    @UploadedFile() image_url: Express.Multer.File,
+  ) {
+    return await this.service.updateImage(id, image_url);
+  }
+
+  @Delete(':id')
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.ADMIN])
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.deleteProduct(id);
+  }
 }

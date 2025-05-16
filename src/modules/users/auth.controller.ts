@@ -1,19 +1,24 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { UserService } from "./auth.service";
-import { LoginDto } from "./dtos/login.dtos";
-import { RegisterDto } from "./dtos";
+import { LoginDto, RegisterDto } from "./dtos";
+import { Protected, Roles } from "src/decorators";
+import { UserRoles } from "./enums";
 
-@Controller('user')
+@Controller("auth")
 export class UserController {
-    constructor(private service:UserService){}
+    constructor(private service: UserService) { }
 
-    @Post('login')
-    async Login(@Body() payload:LoginDto){
-        return await this.service.Login(payload)
+    @Post("register")
+    @Protected(false)
+    @Roles([UserRoles.ADMIN,UserRoles.USER])
+    async register(@Body() body: RegisterDto) {
+        return await this.service.register(body)
     }
-
-    @Post('register')
-    async Register(@Body() payload:RegisterDto){
-        return await this.service.Register(payload)
+    @Post("login")
+    @Protected(false)
+    @Roles([UserRoles.ADMIN,UserRoles.USER])
+    async login(@Body() body: LoginDto) {
+        console.log(body)
+        return await this.service.login(body)
     }
 }

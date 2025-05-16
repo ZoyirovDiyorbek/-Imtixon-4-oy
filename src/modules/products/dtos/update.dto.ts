@@ -1,38 +1,42 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Status } from '../enums';
 import { IsEnum, IsNumberString, IsOptional, IsString } from 'class-validator';
-export class CreateProductDto {
+export class UpdateProductDto {
+  @IsOptional()
   @ApiProperty({ type: 'string' })
   @IsString()
-  name: string;
+  name?: string;
 
+  @IsOptional()
   @ApiProperty({ type: 'string' })
   @IsString()
-  description: string;
+  description?: string;
 
+  @IsOptional()
   @ApiProperty({ type: 'number' })
   @IsNumberString()
-  price: number;
+  price?: number;
 
+  @IsOptional()
   @ApiProperty({ type: 'number' })
   @IsNumberString()
-  discount: number;
+  discount?: number;
 
+  @IsOptional()
   @ApiProperty({ type: 'number' })
   @IsNumberString()
-  rating: number;
+  rating?: number;
 
+  @IsOptional()
   @ApiProperty({ type: 'number' })
   @IsNumberString()
-  stock: number;
+  stock?: number;
 
+  @IsOptional()
   @ApiProperty({
     type: 'string',
     enum: Status,
   })
   @IsEnum(Status)
-  status: Status;
-
-  @ApiProperty({ type: 'string', format: 'binary' })
-  image_url: Express.Multer.File;
+  status?: Status;
 }

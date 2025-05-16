@@ -23,4 +23,4 @@ import { User } from "./models";
     controllers:[UserController]
 })
 
-export class UserModule {};
+export class AuthModel {};
